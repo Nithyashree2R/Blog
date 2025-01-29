@@ -1,1 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Blog Platform</title>
+    <style>
+        /* Background Animation */
+        @keyframes vibrantBackground {
+            0% {
+                background-color:  rgb(135, 206, 235); /* Orange */
+                background-size: 150%;
+            }
+            50% {
+                background-color:  rgb(135, 206, 235); /* Darker Orange */
+                background-size: 160%;
+            }
+            100% {
+                background-color:  rgb(135, 206, 235); /* Orange */
+                background-size: 150%;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background:  rgb(135, 206, 235);
+            animation: vibrantBackground 20s ease-in-out infinite;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            position: relative;
+        }
+        header .menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        header .menu a {
+            margin-left: 1rem;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .container {
+            width: 80%;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-menu {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+        .category-menu a {
+            margin-left: 1rem;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        .blog-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .blog-post {
+            flex: 1 1 calc(33.333% - 1rem);
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .blog-post img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ff0000;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .add-post {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .add-post button {
+            font-size: 2rem;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+        }
+
+        .add-form {
+            display: none;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .add-form input, .add-form textarea, .add-form select {
+            display: block;
+            margin: 0.5rem auto;
+            padding: 0.5rem;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .add-form button {
+            padding: 0.5rem 1rem;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        /* About Us and Contact Us Sections */
+        .about-us, .contact-us {
+            padding: 2rem;
+            background-color: #fff;
+            margin-top: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+        .about-us h2, .contact-us h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+        .about-us p, .contact-us p {
+            font-size: 1rem;
+            color: #666;
+            text-align: center;
+        }
+		/* About Us Section Layout for Row & Columns */
+.about-us-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* About Us Item Styling */
+.about-us-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    flex: 1;
+}
+
+.about-us-item .icon {
+    background-color: #FF4500;
+    color: white;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.5rem;
+}
+
+.about-us-item .icon i {
+    font-size: 2rem;
+}
+
+.about-us-item .text h3 {
+    font-size: 1.8rem;
+    color: #007BFF;
+    margin-bottom: 0.5rem;
+}
+
+.about-us-item .text p {
+    font-size: 1.1rem;
+    color: #444;
+}
+
+/* Responsive Design for About Us Section */
+@media (max-width: 768px) {
+    .about-us-row {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .about-us-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .about-us-item .icon {
+        margin-bottom: 1rem;
+    }
+}
+
+        /* Contact Us Section with Centered Content and No Line Spacing */
+.contact-us {
+    padding: 2rem;
+    background-color: #fff;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center all text */
+}
+
+.contact-us h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.contact-us p {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 1rem; /* Reduced space between paragraphs */
+}
+
+.contact-item {
+    display: inline-flex; /* Center the contact items horizontally */
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem; /* Reduced space between items */
+}
+
+.contact-item .icon {
+    font-size: 2rem;
+    color: #007BFF;
+    margin-right: 0.5rem;
+}
+
+.contact-item .text {
+    font-size: 1rem;
+    color: #444;
+    text-align: left;
+}
+
+.contact-item a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+}
+.newsletter {
+    padding: 2rem;
+    background-color: #fff;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.newsletter h2 {
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.newsletter input {
+    padding: 0.8rem;
+    font-size: 1rem;
+    width: 80%;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.newsletter button {
+    padding: 0.8rem 2rem;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.newsletter button:hover {
+    background-color: #000000;
+}
+
+		.faq {
+    padding: 2rem;
+    background-color: #fff;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 60%;  /* Adjust width for center alignment */
+    margin-left: auto;  /* Center horizontally */
+    margin-right: auto;  /* Center horizontally */
+}
+
+.faq h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #000000;
+    font-weight: bold;
+}
+
+.faq-item {
+    margin: 1rem 0;
+}
+
+.faq-item h3 {
+    font-size: 1.5rem;
+    color: #000000;
+}
+
+.faq-item p {
+    font-size: 1rem;
+    color: #007BFF;
+    text-align: center; /* Align FAQ answers at the center */
+}
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Blog Platform</h1>
+        <div class="menu">
+            <a href="#about-us-section">About Us</a>
+            <a href="#contact-us-section">Contact Us</a>
+			<a href="#faq-us-section">FAQ</a>
+			<a href="#news-us-section">Newsletter</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="category-menu">
+            <a href="#" id="all-category" onclick="filterPosts('')">All</a>
+            <a href="#" id="health-category" onclick="filterPosts('health')">Health</a>
+            <a href="#" id="news-category" onclick="filterPosts('news')">News</a>
+            <a href="#" id="entertainment-category" onclick="filterPosts('entertainment')">Entertainment</a>
+            <a href="#" id="education-category" onclick="filterPosts('education')">Education</a>
+        </div>
+
+        <div class="add-post">
+            <button id="add-post-btn">+</button>
+        </div>
+
+        <div class="add-form" id="add-form">
+            <input type="text" id="post-title" placeholder="Enter blog title" required>
+            <input type="file" id="post-image" accept="image/*" required>
+            <textarea id="post-content" placeholder="Enter blog content" required></textarea>
+            <input type="date" id="post-date" required>
+            <select id="post-category" required>
+                <option value="news">News</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="education">Education</option>
+                <option value="health">Health</option>
+            </select>
+            <button id="submit-post-btn">Submit</button>
+        </div>
+
+        <div id="blog-container" class="blog-container">
+            <!-- Posts will be displayed here -->
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+<!-- About Us Section -->
+<div id="about-us-section" class="about-us">
+    <h2>About Us</h2>
+    <p>Welcome to our Blog Platform! We are a team of passionate writers and bloggers bringing you the latest insights in various fields. Our goal is to provide informative, engaging, and thought-provoking content for our readers. Our blog covers a wide range of topics, including health, education, entertainment, and the latest news.</p>
+
+    <!-- About Us Items (Mission, Vision, Team, Goal) -->
+    <div class="about-us-row">
+        <!-- Mission Section -->
+        <div class="about-us-item">
+            <div class="icon">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <div class="text">
+                <h3>Mission</h3>
+                <p>Our mission is to empower readers with knowledge and provide a platform that encourages learning, growth, and diverse perspectives.</p>
+            </div>
+        </div>
+
+        <!-- Vision Section -->
+        <div class="about-us-item">
+            <div class="icon">
+                <i class="fas fa-eye"></i>
+            </div>
+            <div class="text">
+                <h3>Vision</h3>
+                <p>We envision a world where our platform serves as a resource for educational growth, well-being, and entertainment.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-us-row">
+        <!-- Team Section -->
+        <div class="about-us-item">
+            <div class="icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="text">
+                <h3>Team</h3>
+                <p>Our team consists of writers, journalists, and subject-matter experts who contribute their knowledge to our platform.</p>
+            </div>
+        </div>
+
+        <!-- Goal Section -->
+        <div class="about-us-item">
+            <div class="icon">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="text">
+                <h3>Goal</h3>
+                <p>Our goal is to create a platform where individuals can share their voices, engage in meaningful discussions, and stay informed with the latest trends and insights across various topics.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="faq-us-section" class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>What is this platform about?</h3>
+            <p>We provide informative content on health, education, news, and more.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How can I contribute a post?</h3>
+            <p>You can submit posts through the "Add Post" button in your account.</p>
+        </div>
+    </div>
+
+
+<div id="news-us-section" class="newsletter">
+    <h2>Subscribe to Our Newsletter</h2>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    <button onclick="subscribeNewsletter()">Subscribe</button>
+</div>
+
+    <!-- Contact Us Section -->
+    <!-- Contact Us Section -->
+<div id="contact-us-section" class="contact-us">
+    <h2>Contact Us</h2>
+    <p>Have questions, suggestions, or feedback? We'd love to hear from you! You can contact us via the following:</p>
+    
+    <div class="contact-item">
+        <div class="icon">
+            <i class="fas fa-envelope"></i> <!-- Email Icon -->
+        </div>
+        <div class="text">
+            <p><strong>Email:</strong> contact@blogplatform.com</p>
+        </div>
+    </div>
+<br>
+    <div class="contact-item">
+        <div class="icon">
+            <i class="fas fa-phone-alt"></i> <!-- Phone Icon -->
+        </div>
+        <div class="text">
+            <p><strong>Phone:</strong> 123-456-7890</p>
+        </div>
+    </div>
+<br>
+    <div class="contact-item">
+        <div class="icon">
+            <i class="fab fa-facebook"></i> <!-- Facebook Icon -->
+        </div>
+        <div class="text">
+            <p><strong>Social Media:</strong> Follow us on our <a href="https://www.facebook.com" target="_blank">Facebook</a> for updates and news!</p>
+        </div>
+    </div>
+<br>
+    <div class="contact-item">
+        <div class="icon">
+            <i class="fab fa-twitter"></i> <!-- Twitter Icon -->
+        </div>
+        <div class="text">
+            <p><strong>Social Media:</strong> Follow us on our <a href="https://twitter.com" target="_blank">Twitter</a> for updates and news!</p>
+        </div>
+    </div>
+</div>
+<br>
+
+
+
+
+
+    <footer>
+        <p>&copy; 2025 Blog Platform. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const addPostBtn = document.getElementById("add-post-btn");
+        const addForm = document.getElementById("add-form");
+        const submitPostBtn = document.getElementById("submit-post-btn");
+        const blogContainer = document.getElementById("blog-container");
+
+        // Show/hide the form to add new post
+        addPostBtn.addEventListener("click", () => {
+            addForm.style.display = addForm.style.display === "none" ? "block" : "none";
+        });
+
+        // Submit a new post
+        submitPostBtn.addEventListener("click", () => {
+            const postTitle = document.getElementById("post-title").value;
+            const postImage = document.getElementById("post-image").files[0];
+            const postContent = document.getElementById("post-content").value;
+            const postDate = document.getElementById("post-date").value;
+            const postCategory = document.getElementById("post-category").value;
+
+            const formData = new FormData();
+            formData.append("title", postTitle);
+            formData.append("content", postContent);
+            formData.append("category", postCategory);
+            formData.append("image", postImage);
+
+            fetch("/posts", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    loadPosts(); // Reload posts
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        // Load posts
+        function loadPosts() {
+            fetch("/posts")
+                .then(response => response.json())
+                .then(posts => {
+                    blogContainer.innerHTML = ''; // Clear existing posts
+                    posts.forEach(post => {
+                        const postHtml = `
+                            <div class="blog-post" data-id="${post.id}">
+                                <img src="${post.image}" alt="${post.title}">
+                                <h3>${post.title}</h3>
+                                <p>${post.content}</p>
+                                <p><strong>Category:</strong> ${post.category}</p>
+                                <p><strong>Date:</strong> ${post.date}</p>
+                                <button class="delete-btn" onclick="deletePost(${post.id})">🗑️</button>
+                            </div>
+                        `;
+                        blogContainer.innerHTML += postHtml;
+                    });
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        // Filter posts by category
+        function filterPosts(category) {
+            const url = category ? `/posts?category=${category}` : '/posts';  // Send category as query param
+            fetch(url)
+                .then(response => response.json())
+                .then(posts => {
+                    blogContainer.innerHTML = ''; // Clear existing posts
+                    posts.forEach(post => {
+                        const postHtml = `
+                            <div class="blog-post" data-id="${post.id}">
+                                <img src="${post.image}" alt="${post.title}">
+                                <h3>${post.title}</h3>
+                                <p>${post.content}</p>
+                                <p><strong>Category:</strong> ${post.category}</p>
+                                <p><strong>Date:</strong> ${post.date}</p>
+                                <button class="delete-btn" onclick="deletePost(${post.id})">🗑️</button>
+                            </div>
+                        `;
+                        blogContainer.innerHTML += postHtml;
+                    });
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        // Delete post
+        function deletePost(postId) {
+            fetch(`/posts/${postId}`, {
+                method: "DELETE"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    loadPosts(); // Reload posts after deletion
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Initial load
+        loadPosts();
+		
+		function subscribeNewsletter() {
+    const emailInput = document.getElementById('email');
+    const email = emailInput.value;
+    
+    // Check if the email is in a valid format
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (emailPattern.test(email)) {
+        alert('Thank you for subscribing!');
+        emailInput.value = ''; // Clear the input after successful submission
+    } else {
+        alert('Please enter a valid email address!');
+    }
+}
+
+    </script>
+</body>
+</html>
 
